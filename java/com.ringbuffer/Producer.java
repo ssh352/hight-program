@@ -14,6 +14,15 @@ public class Producer {
 
 
     public void onDate(String uuid){
-        this.process = uuid;
+        long sequece = ringBuffer.next();
+
+        try{
+
+             Order order = (Order)ringBuffer.get(sequece);
+             order.setId(uuid);
+        }finally{
+              ringBuffer.publish(sequece);
+        }
+
     }
 }
